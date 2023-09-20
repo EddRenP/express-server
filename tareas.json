@@ -1,0 +1,17 @@
+[
+    {
+        "id" : 1, 
+        "name" : "comprar provisiones", 
+        "completado" : false
+    },
+    {
+        "id" : 2, 
+        "name" : "comprar medicina", 
+        "completado" : false
+    },
+    {
+        "id" : 3, 
+        "name" : "comprar ropa", 
+        "completado" : false
+    }
+]
