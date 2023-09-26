@@ -7,20 +7,33 @@ const router = require('./moduloTareas.js');
 let tareasCompletadas = require('./list-view-router.js');
 let metodo = require('./list-edit-router.js');
 
+const middValidarmetodo = ((req, res, next) => {
+  if (req.method === 'GET' || req.method === 'POST' || req.method === 'PUT' || req.method === 'DEL') {
+    console.log("Metodo "+ req.method+ " ingresado, continuando");
+    next();
+  } 
+  else {
+    console.log("Metodo "+ req.method+ " no valido");
+    res.status(404).send({
+      mensaje: "Metodo no valido",
+    });
+  }
+});
+
 app.use(express.json());
 app.use('/tareas', router);
 app.use('/completadas', tareasCompletadas);
 app.use('/metodo', metodo);
 
-router.get("/", (req, res) => {
+router.get("/", middValidarmetodo, (req, res) => {
   res.status(200).send(tareas);
 });
 
-tareasCompletadas.get("/", (req, res) => {
+tareasCompletadas.get("/", middValidarmetodo, (req, res) => {
   res.status(200).send(tareas);
 });
 
-metodo.get("/", (req, res) => {
+metodo.get("/", middValidarmetodo, (req, res) => {
   res.status(200).send(tareas);
 });
 
