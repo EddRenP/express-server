@@ -7,7 +7,7 @@
     {
         "id" : 2, 
         "name" : "comprar medicina", 
-        "completado" : false
+        "completado" : true
     },
     {
         "id" : 3, 
