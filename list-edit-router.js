@@ -4,7 +4,7 @@ const router = express.Router();
 
 let tareas = require('./tareas.json');
 
-//ruta del modulo de crear tareas
+//middleware para verificar que el cuerpo del POST no vaya vacio
 const middPost1 = ((req, res, next) => {
   if(JSON.stringify(req.body) == '{}'){
     console.log(JSON.stringify(req.body));
@@ -17,6 +17,7 @@ const middPost1 = ((req, res, next) => {
   }
 });
 
+//middleware para verificar que el cuerpo del POST no tenga datos incorrectos
 const middPost2 = ((req, res, next) => {
   if(isNaN(req.body.id) || req.body.completado != false){
     if(req.error == 1){
@@ -33,6 +34,8 @@ const middPost2 = ((req, res, next) => {
   }
 });
 
+
+//metodo post, para agregar
 router.post("/", middPost1, middPost2, (req, res) => {
   if(req.error == 0){
     const tareaNueva = req.body;
@@ -55,14 +58,14 @@ router.post("/", middPost1, middPost2, (req, res) => {
   
 });
 
-// eliminar
+//metodo delete, para eliminar
 router.delete("/:id", (req, res) => {
   const id = req.params.id;
-  tareas = tareas.filter((tarea) => tarea.id != id);
+  tareas = tareas.splice(id-1,1);
   res.status(200).send(tareas);
 });
 
-//actualizar tareas
+//middleware para verificar que el cuerpo del PUT no vaya vacio
 const middPut1 = ((req, res, next) => {
   if(JSON.stringify(req.body) == '{}'){
     console.log(JSON.stringify(req.body));
@@ -75,6 +78,7 @@ const middPut1 = ((req, res, next) => {
   }
 });
 
+//middleware para verificar que el cuerpo del PUT no vaya vacio
 const middPut2 = ((req, res, next) => {
   if(isNaN(req.body.id) || req.body.completado != true){
     if(req.error == 1){
@@ -91,13 +95,13 @@ const middPut2 = ((req, res, next) => {
   }
 });
 
+//metodo PUT, para modificar
 router.put("/:id", middPut1, middPut2, (req, res) => {
   if(req.error == 0){
+    const id = req.params.id;
     const tarea = req.body;
-    const idTarea = tarea.id;
-    const posicion = tareas.findIndex((tarea) => tarea.id === idTarea);
-    if (posicion !== -1) {
-      tareas[posicion] = tarea;
+    if (id > 0) {
+      tareas[id-1] = tarea;
       res.status(200).send({
         mensaje: "tarea actualizada",
       });
