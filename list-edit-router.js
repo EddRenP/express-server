@@ -41,17 +41,17 @@ router.post("/", middPost1, middPost2, (req, res) => {
     const tareaNueva = req.body;
     tareas.push(tareaNueva);
     console.log("****", tareaNueva);
-    res.status(200).send({
+    res.status(200).json({
       mensaje: "tarea creada exitosamente",
     });
   }
   else if(req.error == 1){
-    res.status(400).send({
+    res.status(400).json({
       mensaje: "post con cuerpo vacio",
     });
   }
   else if(req.error == 2){
-    res.status(400).send({
+    res.status(400).json({
       mensaje: "post con datos invalidos",
     });
   }
@@ -62,7 +62,7 @@ router.post("/", middPost1, middPost2, (req, res) => {
 router.delete("/:id", (req, res) => {
   const id = req.params.id;
   tareas = tareas.splice(id-1,1);
-  res.status(200).send(tareas);
+  res.status(200).json(tareas);
 });
 
 //middleware para verificar que el cuerpo del PUT no vaya vacio
@@ -102,22 +102,22 @@ router.put("/:id", middPut1, middPut2, (req, res) => {
     const tarea = req.body;
     if (id > 0) {
       tareas[id-1] = tarea;
-      res.status(200).send({
+      res.status(200).json({
         mensaje: "tarea actualizada",
       });
     } else {
-      res.status(404).send({
+      res.status(404).json({
         mensaje: "tarea no encontrada",
       });
     }
   }
   else if(req.error == 1){
-    res.status(400).send({
+    res.status(400).json({
       mensaje: "put con cuerpo vacio",
     });
   }
   else if(req.error == 2){
-    res.status(400).send({
+    res.status(400).json({
       mensaje: "put con datos invalidos",
     });
   }

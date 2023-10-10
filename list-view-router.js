@@ -13,7 +13,7 @@ const middValidarparametro = ((req, res, next) => {
    }
    else{
      console.log("Url "+ req.originalUrl+ " no valida");
-     res.status(404).send({
+     res.status(404).json({
        mensaje: "url no valida",
      });
    }
@@ -39,9 +39,9 @@ router.get("/:parametro", middValidarparametro, (req, res) => {
     if (parametro == 'true')
     {
       if (completadas.length>0) {
-          res.status(200).send(completadas);
+          res.status(200).json({completadas});
         } else {
-          res.status(404).send({
+          res.status(404).json({
             mensaje: "no hay tareas completadas",
           });
         }
@@ -49,9 +49,9 @@ router.get("/:parametro", middValidarparametro, (req, res) => {
     else
     {
       if (nocompletadas.length>0) {
-          res.status(200).send(nocompletadas);
+          res.status(200).json({nocompletadas});
         } else {
-          res.status(404).send({
+          res.status(404).json({
             mensaje: "no hay tareas incompletas",
           });
         }

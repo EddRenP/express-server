@@ -29,7 +29,7 @@ function rolMiddleware(roles) {
           next();
       }
       else{
-          res.status(401).send('No tienes permiso para acceder');
+          res.status(401).json({mensaje : 'No tienes permiso para acceder'});
       }
   }
 }
@@ -38,7 +38,7 @@ function rolMiddleware(roles) {
 function authMiddleware(req, res, next) {
   const token = req.headers.authorization;
   if (!token) {
-      res.status(401).send('debes proporcionar un token')
+      res.status(404).json({mensaje : 'debes proporcionar un token'});
   }
 
   try{
@@ -46,7 +46,7 @@ function authMiddleware(req, res, next) {
       req.data = tokenDecrypted;
       next();
   }catch(error){
-      res.status(500).send('ocurrio un error con el token');
+      res.status(400).json({mensaje : 'Ocurrio un error con el token'});
   }
 }
 
@@ -58,9 +58,7 @@ const middValidarmetodo = ((req, res, next) => {
   } 
   else {
     console.log("Metodo "+ req.method+ " no valido");
-    res.status(404).send({
-      mensaje: "Metodo no valido",
-    });
+    res.status(405).json({mensaje : 'Metodo no valido'});
   }
 });
 
@@ -86,28 +84,26 @@ app.post('/login', (req, res) => {
       })
   }
   else {
-      return res.status(403).send({
-          message: "Usuario o contraseña incorrectos"
-      })
+      return res.status(403).json({mensaje : 'Usuario o contraseña incorrectos'});
   }
 });
 
 //solo para probar la parte de "autenticacion en express"
 app.get("/login", authMiddleware, rolMiddleware(['vendedor']), (req, res) => {
-  res.status(200).send(tareas);
+  res.status(200).json({tareas});
 });
 
 router.get("/", middValidarmetodo, authMiddleware, rolMiddleware(['vendedor']), (req, res) => {
   console.log(req.originalUrl);
-  res.status(200).send(tareas);
+  res.status(200).json({tareas});
 });
 
 tareasCompletadas.get("/", middValidarmetodo, authMiddleware, rolMiddleware(['vendedor']), (req, res) => {
-  res.status(200).send(tareas);
+  res.status(200).json({tareas});
 });
 
 metodo.get("/", middValidarmetodo, authMiddleware, rolMiddleware(['vendedor']), (req, res) => {
-  res.status(200).send(tareas);
+  res.status(200).json({tareas});
 });
 
 app.listen(port, () => {

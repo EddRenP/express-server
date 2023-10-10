@@ -8,9 +8,9 @@ router.get("/:id", (req, res) => {
   const id = req.params.id;
   const tarea = tareas.find((tarea) => tarea.id == id);
   if (tarea) {
-    res.status(200).send(tarea);
+    res.status(200).json({tarea});
   } else {
-    res.status(404).send({
+    res.status(404).json({
       mensaje: "tarea no encontrado",
     });
   }
